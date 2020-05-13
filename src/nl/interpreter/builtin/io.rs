@@ -48,7 +48,7 @@ fn println(args: Vec<Object>) -> Result<Object, Error> {
         return Error::errf(
             &format!(
                 "'println' only receives a String, got a {} instead.",
-                &args[0].type_string()
+                &args[0].kind_string()
             ),
             "to-string",
             intern_location!(),

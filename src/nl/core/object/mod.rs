@@ -22,6 +22,23 @@ pub use symbol::*;
 
 use std::fmt;
 
+/// Kind of an object.
+///
+#[derive(Clone, Copy, PartialEq)]
+pub enum ObjectKind {
+    Nil,
+    Bool,
+    Integer,
+    Float,
+    Char,
+    String,
+    Keyword,
+    Symbol,
+    List,
+
+    Any,
+}
+
 /// A LISP object.
 ///
 /// It is only used during Compile Time Evaluation.
@@ -50,9 +67,25 @@ pub enum Object {
 }
 
 impl Object {
-    /// Gets the type of the object as a string.
+    /// Gets the kind of the object.
     ///
-    pub fn type_string(&self) -> &'static str {
+    pub fn kind(&self) -> ObjectKind {
+        match self {
+            Object::Nil(_) => ObjectKind::Nil,
+            Object::Bool(_, _) => ObjectKind::Bool,
+            Object::Integer(_, _) => ObjectKind::Integer,
+            Object::Float(_, _) => ObjectKind::Float,
+            Object::Char(_, _) => ObjectKind::Char,
+            Object::String(_, _) => ObjectKind::String,
+            Object::Keyword(_, _) => ObjectKind::Keyword,
+            Object::Symbol(_, _) => ObjectKind::Symbol,
+            Object::List(_, _) => ObjectKind::List,
+        }
+    }
+
+    /// Gets the kind of the object as a string.
+    ///
+    pub fn kind_string(&self) -> &'static str {
         match self {
             Self::Nil(_) => "Nil",
             Self::Bool(_, _) => "Bool",

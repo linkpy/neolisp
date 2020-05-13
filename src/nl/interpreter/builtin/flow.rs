@@ -30,7 +30,7 @@ fn flow_if(scope: &mut Scope, args: &[Object]) -> Result<Object, Error> {
             if !v.is_bool() {
                 return Error::err(&format!(
                     "Expected an Bool, got a '{}' from {}",
-                    v.type_string(),
+                    v.kind_string(),
                     v
                 ));
             }
@@ -87,7 +87,7 @@ fn flow_while(scope: &mut Scope, args: &[Object]) -> Result<Object, Error> {
                 if !o.is_bool() {
                     return Error::err(&format!(
                         "'while' requires a Bool, get a '{}' from {}",
-                        o.type_string(),
+                        o.kind_string(),
                         cond
                     ));
                 }
