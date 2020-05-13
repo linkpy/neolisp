@@ -3,6 +3,12 @@ use super::binding::*;
 use std::collections::HashMap;
 use std::mem::replace;
 
+pub enum Mode {
+    Evaluation,
+    Macro,
+    Inherit,
+}
+
 pub struct Scope {
     levels: Vec<ScopeLevel>,
 }
@@ -15,12 +21,13 @@ struct LoopInfo {
 struct ScopeLevel {
     pub bindings: HashMap<String, Binding>,
     pub loop_info: Option<LoopInfo>,
+    pub mode: Mode,
 }
 
 impl Scope {
     pub fn new() -> Scope {
         Scope {
-            levels: vec![ScopeLevel::new()],
+            levels: vec![ScopeLevel::new(Mode::Evaluation)],
         }
     }
 
@@ -94,18 +101,18 @@ impl Scope {
         }
     }
 
-    pub fn enter(&mut self) -> &mut Self {
-        self.levels.push(ScopeLevel::new());
+    pub fn enter(&mut self, mode: Mode) -> &mut Self {
+        self.levels.push(ScopeLevel::new(mode));
         self
     }
 
-    pub fn enter_loop(&mut self) -> &mut Self {
-        self.levels.push(ScopeLevel::new_loop());
+    pub fn enter_loop(&mut self, mode: Mode) -> &mut Self {
+        self.levels.push(ScopeLevel::new_loop(mode));
         self
     }
 
-    pub fn enter_loop_boundary(&mut self) -> &mut Self {
-        self.levels.push(ScopeLevel::new_loop_boundary());
+    pub fn enter_loop_boundary(&mut self, mode: Mode) -> &mut Self {
+        self.levels.push(ScopeLevel::new_loop_boundary(mode));
         self
     }
 
@@ -145,30 +152,33 @@ impl Scope {
 }
 
 impl ScopeLevel {
-    fn new() -> ScopeLevel {
+    fn new(mode: Mode) -> ScopeLevel {
         ScopeLevel {
             bindings: HashMap::new(),
             loop_info: None,
+            mode,
         }
     }
 
-    fn new_loop() -> ScopeLevel {
+    fn new_loop(mode: Mode) -> ScopeLevel {
         ScopeLevel {
             bindings: HashMap::new(),
             loop_info: Some(LoopInfo {
                 break_called: false,
                 boundary: false,
             }),
+            mode,
         }
     }
 
-    fn new_loop_boundary() -> ScopeLevel {
+    fn new_loop_boundary(mode: Mode) -> ScopeLevel {
         ScopeLevel {
             bindings: HashMap::new(),
             loop_info: Some(LoopInfo {
                 break_called: false,
                 boundary: true,
             }),
+            mode,
         }
     }
 }

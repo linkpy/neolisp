@@ -73,7 +73,10 @@ fn evaluate_expression(scope: &mut Scope, expr: &Vec<Object>) -> Result<Object, 
                     let f = form.clone();
                     evaluate_dynamic_form(scope, name, rest, f)
                 }
-                Binding::MacroForm() => unimplemented!(),
+                Binding::MacroForm(form) => {
+                    let f = form.clone();
+                    evaluate_macro_form(scope, name, rest, f)
+                }
             };
 
             Error::rethrow(r, name, info.location.clone())
@@ -103,7 +106,7 @@ fn evaluate_dynamic_form(
     scope: &mut Scope,
     name: &String,
     args: &[Object],
-    form: DynamicForm,
+    form: CustomForm,
 ) -> Result<Object, Error> {
     if args.len() != form.arguments.len() {
         return Error::errf(
@@ -118,7 +121,7 @@ fn evaluate_dynamic_form(
         );
     }
 
-    scope.enter_loop_boundary();
+    scope.enter_loop_boundary(Mode::Evaluation);
 
     for i in 0..args.len() {
         let arg_name = &form.arguments[i];
@@ -128,6 +131,45 @@ fn evaluate_dynamic_form(
         };
 
         scope.insert(arg_name.clone(), Binding::DynamicVariable(expr));
+    }
+
+    let mut result = Object::nil();
+
+    for expr in &form.body {
+        match evaluate(scope, expr) {
+            Ok(v) => result = v,
+            Err(v) => return v.push_err(name, form.location),
+        }
+    }
+
+    scope.leave();
+    Ok(result)
+}
+
+fn evaluate_macro_form(
+    scope: &mut Scope,
+    name: &String,
+    args: &[Object],
+    form: CustomForm,
+) -> Result<Object, Error> {
+    if args.len() != form.arguments.len() {
+        return Error::errf(
+            &format!(
+                "'{}' requires {} arguments, got {} instead.",
+                name,
+                form.arguments.len(),
+                args.len()
+            ),
+            name,
+            form.location,
+        );
+    }
+
+    scope.enter_loop_boundary(Mode::Macro);
+
+    for i in 0..args.len() {
+        let arg_name = &form.arguments[i];
+        scope.insert(arg_name.clone(), Binding::DynamicVariable(args[i].clone()));
     }
 
     let mut result = Object::nil();

@@ -15,12 +15,11 @@
   <component name="ChangeListManager">
     <list default="true" id="8b3f562b-56ad-4520-845f-b5612deb23b9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nl/core/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/core/error.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/nl/interpreter/binding.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/interpreter/binding.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nl/interpreter/builtin/flow.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/interpreter/builtin/flow.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/nl/interpreter/builtin/function.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/interpreter/builtin/function.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/nl/interpreter/eval.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/interpreter/eval.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/nl/interpreter/scope.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/interpreter/scope.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/nl/reader/grammar.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/reader/grammar.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +53,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="org.rust.cargo.project.model.PROJECT_DISCOVERY" value="true" />
+    <property name="org.rust.hideDetachedFileNotifications/home/linkie-pi/Documents/devel/rust/neolisp/src/nl/interpreter/expension.rs" value="true" />
     <property name="settings.editor.selected.configurable" value="language.rust.cargo" />
   </component>
   <component name="RecentsManager">
@@ -191,10 +191,10 @@
       <screen x="1920" y="0" width="2560" height="1440" />
     </state>
     <state x="3038" y="453" width="374" height="560" key="#com.intellij.ide.util.MemberChooser/1920.0.2560.1440/0.360.1920.1080@1920.0.2560.1440" timestamp="1589355161852" />
-    <state x="2961" y="481" width="524" height="503" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1589368669449">
+    <state x="2961" y="481" width="524" height="503" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1589385905087">
       <screen x="1920" y="0" width="2560" height="1440" />
     </state>
-    <state x="2961" y="481" width="524" height="503" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.0.2560.1440/0.360.1920.1080@1920.0.2560.1440" timestamp="1589368669449" />
+    <state x="2961" y="481" width="524" height="503" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/1920.0.2560.1440/0.360.1920.1080@1920.0.2560.1440" timestamp="1589385905087" />
     <state x="3010" y="476" width="424" height="514" key="FileChooserDialogImpl" timestamp="1588838223185">
       <screen x="1920" y="0" width="2560" height="1440" />
     </state>

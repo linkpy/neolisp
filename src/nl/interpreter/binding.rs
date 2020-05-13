@@ -17,7 +17,7 @@ pub type EvalForm = fn(Vec<Object>) -> Result<Object, Error>;
 /// The arguments are evaluated before being passed to the handler.
 ///
 #[derive(Clone)]
-pub struct DynamicForm {
+pub struct CustomForm {
     pub location: Location,
     pub arguments: Vec<String>,
     pub body: Vec<Object>,
@@ -34,7 +34,7 @@ pub enum Binding {
     /// An eval form binding.
     EvalForm(EvalForm),
     /// A dynamic form binding.
-    DynamicForm(DynamicForm),
+    DynamicForm(CustomForm),
     /// A macro form binding.
-    MacroForm(),
+    MacroForm(CustomForm),
 }

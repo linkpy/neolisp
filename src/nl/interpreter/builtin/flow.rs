@@ -37,7 +37,7 @@ fn flow_if(scope: &mut Scope, args: &[Object]) -> Result<Object, Error> {
 
             if args.len() == 2 {
                 if v.get_bool() {
-                    match evaluate(scope.enter(), &args[1]) {
+                    match evaluate(scope.enter(Mode::Evaluation), &args[1]) {
                         Err(e) => return Err(e),
                         _ => {}
                     };
@@ -49,12 +49,12 @@ fn flow_if(scope: &mut Scope, args: &[Object]) -> Result<Object, Error> {
 
             if args.len() == 3 {
                 return if v.get_bool() {
-                    let r = evaluate(scope.enter(), &args[1]);
+                    let r = evaluate(scope.enter(Mode::Evaluation), &args[1]);
                     scope.leave();
 
                     r
                 } else {
-                    let r = evaluate(scope.enter(), &args[2]);
+                    let r = evaluate(scope.enter(Mode::Evaluation), &args[2]);
                     scope.leave();
 
                     r
@@ -96,7 +96,7 @@ fn flow_while(scope: &mut Scope, args: &[Object]) -> Result<Object, Error> {
                     break;
                 }
 
-                scope.enter_loop();
+                scope.enter_loop(Mode::Evaluation);
 
                 for expr in args.iter().skip(1) {
                     match evaluate(scope, expr) {
@@ -145,7 +145,7 @@ fn flow_break(scope: &mut Scope, args: &[Object]) -> Result<Object, Error> {
 /// `(do body...)`
 ///
 fn flow_do(scope: &mut Scope, args: &[Object]) -> Result<Object, Error> {
-    scope.enter();
+    scope.enter(Mode::Evaluation);
 
     let mut result = Object::nil();
 
@@ -172,7 +172,7 @@ fn flow_let(scope: &mut Scope, args: &[Object]) -> Result<Object, Error> {
         ));
     }
 
-    scope.enter();
+    scope.enter(Mode::Evaluation);
 
     match flow_let_define_bindings(scope, &args[0]) {
         Some(err) => return Err(err),

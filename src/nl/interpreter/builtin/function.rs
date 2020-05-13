@@ -71,7 +71,7 @@ pub fn defndynamic(scope: &mut Scope, args: &[Object]) -> Result<Object, Error> 
 
     scope.insert(
         name,
-        Binding::DynamicForm(DynamicForm {
+        Binding::DynamicForm(CustomForm {
             location: args[0].get_info().location.clone(),
             arguments: dynform_args,
             body: dynform_body,
