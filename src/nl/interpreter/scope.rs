@@ -2,7 +2,6 @@ use super::binding::*;
 
 use std::collections::HashMap;
 use std::mem::replace;
-use std::ptr::hash;
 
 pub struct Scope {
     levels: Vec<ScopeLevel>,

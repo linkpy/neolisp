@@ -2,7 +2,6 @@ use crate::nl::core::error::*;
 use crate::nl::core::object::*;
 
 use super::scope::Scope;
-use crate::nl::core::error::*;
 
 /// Function signature for all special form handlers.
 /// The arguments are passed as-in, without being evaluated.

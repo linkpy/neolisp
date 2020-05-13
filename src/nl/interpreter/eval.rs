@@ -1,11 +1,9 @@
 use crate::nl::core::object::Object;
-use std::collections::HashMap;
 
 use super::binding::*;
 use super::scope::*;
 
 pub use crate::nl::core::error::*;
-use crate::nl::core::location::*;
 
 pub fn evaluate(scope: &mut Scope, object: &Object) -> Result<Object, Error> {
     let r = match object {
@@ -72,7 +70,8 @@ fn evaluate_expression(scope: &mut Scope, expr: &Vec<Object>) -> Result<Object, 
                     Err(v) => return v.push_err(name, info.location.clone()),
                 }),
                 Binding::DynamicForm(form) => {
-                    evaluate_dynamic_form(scope, name, rest, form.clone())
+                    let f = form.clone();
+                    evaluate_dynamic_form(scope, name, rest, f)
                 }
                 Binding::MacroForm() => unimplemented!(),
             };

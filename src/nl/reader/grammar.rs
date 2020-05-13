@@ -1,5 +1,3 @@
-use std::char::from_u32;
-
 use crate::nl::core::object::*;
 
 peg::parser! { pub grammar nl_parser() for str {

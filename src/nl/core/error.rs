@@ -1,5 +1,4 @@
 pub use super::location::*;
-use super::object::*;
 
 pub struct Error {
     message: String,
@@ -54,7 +53,7 @@ impl Error {
 
     /// Pushes a stack frame in the error and wraps it into a `Result::Err`.
     ///
-    pub fn push_err<T>(mut self, name: &str, location: Location) -> Result<T, Self> {
+    pub fn push_err<T>(self, name: &str, location: Location) -> Result<T, Self> {
         Err(self.push(name, location))
     }
 

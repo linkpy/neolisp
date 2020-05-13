@@ -1,5 +1,4 @@
 use crate::nl::core::object::*;
-use crate::nl::interpreter::Binding::DynamicVariable;
 use crate::nl::interpreter::*;
 
 /// Registers all function builtin forms.
