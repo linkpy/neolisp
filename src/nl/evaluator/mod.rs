@@ -26,7 +26,7 @@ pub enum Command {
     Error(String),
     /// A `return` statement was encountered inside of a function call.
     EndCall(Object),
-    /// A `break` statement was encountered using of a loop.
+    /// A `break` statement was encountered inside of a loop.
     EndLoop(Object),
 }
 
@@ -38,12 +38,10 @@ pub enum Mode {
     Inherited,
     /// Regular evaluation mode. The return of a function is just passed to the engine.
     Evaluate,
-    /// Special evaluation mode for macros during source code evaluation. The return of the function
-    /// is used as actual code and is evaluated by the engine once the macro finishes.
-    EvaluatedExpansion,
-    /// Special evaluation mode for macros. The return of the function is just added to the
-    /// object-tree.
-    Expansion,
+    /// Mode used to evaluate a macro in evaluated object-tree.
+    CodeExpansion,
+    /// Mode used to evaluated a macro in non-evaluated object-tree.
+    DataExpansion,
 }
 
 /// A frame, used by the evaluator when an error occurs.
