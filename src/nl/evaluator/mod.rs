@@ -23,7 +23,7 @@ pub enum Command {
     /// The evaluation succeed.
     Value(Object),
     /// An error occurred.
-    Error,
+    Error(String),
     /// A `return` statement was encountered inside of a function call.
     EndCall(Object),
     /// A `break` statement was encountered using of a loop.
@@ -46,6 +46,15 @@ pub enum Mode {
     Expansion,
 }
 
+/// A frame, used by the evaluator when an error occurs.
+///
+pub struct Frame {
+    /// Name of the frame.
+    name: String,
+    /// Location information of the frame.
+    location: Location,
+}
+
 /// State marker.
 ///
 enum Mark {
@@ -66,6 +75,8 @@ struct State {
     mode: Mode,
     /// Bindings done in the state.
     bindings: HashMap<String, Binding>,
+    /// Frame information of the state.
+    frame: Option<Frame>,
 }
 
 //==================================================================================================
@@ -189,20 +200,20 @@ impl Evaluator {
 
     /// Pushes a new state without any mark.
     ///
-    pub fn push(&mut self, mode: Mode) -> &mut Self {
-        self.push_internal(Mark::None, mode)
+    pub fn push(&mut self, mode: Mode, frame: Option<Frame>) -> &mut Self {
+        self.push_internal(Mark::None, mode, frame)
     }
 
     /// Pushes a new state with a call mark.
     ///
-    pub fn push_call(&mut self, mode: Mode) -> &mut Self {
-        self.push_internal(Mark::Call, mode)
+    pub fn push_call(&mut self, mode: Mode, frame: Option<Frame>) -> &mut Self {
+        self.push_internal(Mark::Call, mode, frame)
     }
 
     /// Pushes a new state with a loop mark.
     ///
-    pub fn push_loop(&mut self, mode: Mode) -> &mut Self {
-        self.push_internal(Mark::Loop, mode)
+    pub fn push_loop(&mut self, mode: Mode, frame: Option<Frame>) -> &mut Self {
+        self.push_internal(Mark::Loop, mode, frame)
     }
 
     /// Pops the last state.
@@ -216,11 +227,12 @@ impl Evaluator {
 
     /// Pushes a new state.
     ///
-    fn push_internal(&mut self, mark: Mark, mode: Mode) -> &mut Self {
+    fn push_internal(&mut self, mark: Mark, mode: Mode, frame: Option<Frame>) -> &mut Self {
         self.stack.push(State {
             mark,
             mode,
             bindings: HashMap::new(),
+            frame,
         });
         self
     }
@@ -230,6 +242,17 @@ impl Evaluator {
     fn enforce_non_empty_stack(&self) {
         if self.is_empty() {
             panic!("the evaluator has no state !");
+        }
+    }
+}
+
+impl Frame {
+    /// Creates a new frame.
+    ///
+    pub fn new(name: &str, location: Location) -> Frame {
+        Frame {
+            name: name.to_string(),
+            location,
         }
     }
 }
