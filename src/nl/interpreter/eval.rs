@@ -114,8 +114,8 @@ fn evaluate_dynamic_form(
                 form.arguments.len(),
                 args.len()
             ),
-            "#evaluate_dynamic_form",
-            intern_location!(),
+            name,
+            form.location,
         );
     }
 
@@ -125,7 +125,7 @@ fn evaluate_dynamic_form(
         let arg_name = &form.arguments[i];
         let expr = match evaluate(scope, &args[i]) {
             Ok(v) => v,
-            Err(v) => return v.push_err("#evaluate_dynamic_form", intern_location!()),
+            Err(v) => return v.push_err(name, form.location),
         };
 
         scope.insert(arg_name.clone(), Binding::DynamicVariable(expr));
@@ -136,7 +136,7 @@ fn evaluate_dynamic_form(
     for expr in &form.body {
         match evaluate(scope, expr) {
             Ok(v) => result = v,
-            Err(v) => return v.push_err("#evaluate_dynamic_form", intern_location!()),
+            Err(v) => return v.push_err(name, form.location),
         }
     }
 

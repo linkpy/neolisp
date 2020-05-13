@@ -19,6 +19,7 @@ pub type EvalForm = fn(Vec<Object>) -> Result<Object, Error>;
 ///
 #[derive(Clone)]
 pub struct DynamicForm {
+    pub location: Location,
     pub arguments: Vec<String>,
     pub body: Vec<Object>,
 }

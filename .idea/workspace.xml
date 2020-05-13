@@ -14,7 +14,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8b3f562b-56ad-4520-845f-b5612deb23b9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nl/interpreter/binding.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/interpreter/binding.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nl/interpreter/builtin/function.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/interpreter/builtin/function.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/nl/interpreter/eval.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/nl/interpreter/eval.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +61,7 @@
       <recent name="$PROJECT_DIR$/src/nl/evaluator/object" />
     </key>
   </component>
-  <component name="RunManager" selected="Cargo Command.Expand neolisp::nl::interpreter::builtin::checks">
+  <component name="RunManager" selected="Cargo Command.Test">
     <configuration name="Build" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="channel" value="STABLE" />
       <option name="command" value="build" />
