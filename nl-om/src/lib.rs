@@ -18,7 +18,6 @@ pub use nil::*;
 pub use string::*;
 pub use symbol::*;
 
-use colored::Colorize;
 use std::fmt;
 
 /// The kind of an object.

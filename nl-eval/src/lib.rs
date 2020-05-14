@@ -56,7 +56,7 @@ pub struct Frame {
 
 /// State marker.
 ///
-enum Mark {
+pub enum Mark {
     /// Absence of mark.
     None,
     /// Used when calling functions.
@@ -197,42 +197,77 @@ impl Evaluator {
         self
     }
 
-    /// Pushes a new state without any mark.
+    /// Enters a new state.
     ///
-    pub fn push(&mut self, mode: Mode, frame: Option<Frame>) -> &mut Self {
-        self.push_internal(Mark::None, mode, frame)
+    pub fn enter(
+        &mut self,
+        mark: Mark,
+        mode: Mode,
+        frame: Option<Frame>,
+        f: fn(&mut Self) -> Command,
+    ) -> Command {
+        self.push(mark, mode, frame);
+
+        let r = f(self);
+        match r {
+            Command::Error(_) => r,
+            _ => {
+                self.pop();
+                r
+            }
+        }
     }
 
-    /// Pushes a new state with a call mark.
+    /// Prints the current state stack of the evaluator.
     ///
-    pub fn push_call(&mut self, mode: Mode, frame: Option<Frame>) -> &mut Self {
-        self.push_internal(Mark::Call, mode, frame)
-    }
+    pub fn print_stacktrace(&self, all: bool) {
+        use colored::*;
 
-    /// Pushes a new state with a loop mark.
-    ///
-    pub fn push_loop(&mut self, mode: Mode, frame: Option<Frame>) -> &mut Self {
-        self.push_internal(Mark::Loop, mode, frame)
-    }
+        for state in self.stack.iter().rev() {
+            match &state.frame {
+                Some(f) => {
+                    println!("{}", format!("{}: {}", f.name, f.location).normal());
+                }
+                _ => {}
+            }
 
-    /// Pops the last state.
-    ///
-    pub fn pop(&mut self) -> &mut Self {
-        self.enforce_non_empty_stack();
-
-        self.stack.pop();
-        self
+            if all {
+                println!(
+                    "\t{} {}",
+                    match state.mark {
+                        Mark::None => "--".bright_black(),
+                        Mark::Call => "CM".bright_red(),
+                        Mark::Loop => "LM".bright_cyan(),
+                    },
+                    match state.mode {
+                        Mode::Inherited => "v--v".bright_black(),
+                        Mode::Evaluate => "EVAL".bright_green(),
+                        Mode::CodeExpansion => "CEXP".bright_magenta(),
+                        Mode::DataExpansion => "DEXP".bright_purple(),
+                    }
+                );
+            }
+        }
     }
 
     /// Pushes a new state.
     ///
-    fn push_internal(&mut self, mark: Mark, mode: Mode, frame: Option<Frame>) -> &mut Self {
+    fn push(&mut self, mark: Mark, mode: Mode, frame: Option<Frame>) -> &mut Self {
         self.stack.push(State {
             mark,
             mode,
             bindings: HashMap::new(),
             frame,
         });
+        self
+    }
+
+    /// Pops the last state.
+    ///
+    fn pop(&mut self) -> &mut Self {
+        self.enforce_non_empty_stack();
+
+        self.stack.pop();
         self
     }
 
