@@ -1,5 +1,5 @@
 [package]
-name = "neolisp"
+name = "nl-reader"
 version = "0.1.0"
 authors = ["Nils 'Linkie Pi' Reid <nils.reid@neoshadow.co>"]
 edition = "2018"
@@ -8,8 +8,4 @@ edition = "2018"
 
 [dependencies]
 peg = "0.6.2"
-rustyline = "6.1.2"
-colored = "1.9.3"
-nl-om = { path = "nl-om" }
-nl-reader = { path = "nl-reader" }
-nl-eval = { path = "nl-eval" }
+nl-om = { path = "../nl-om" }

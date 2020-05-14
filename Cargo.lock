@@ -166,6 +166,9 @@ name = "neolisp"
 version = "0.1.0"
 dependencies = [
  "colored",
+ "nl-eval",
+ "nl-om",
+ "nl-reader",
  "peg",
  "rustyline",
 ]
@@ -181,6 +184,26 @@ dependencies = [
  "cfg-if",
  "libc",
  "void",
+]
+
+[[package]]
+name = "nl-eval"
+version = "0.1.0"
+dependencies = [
+ "colored",
+ "nl-om",
+]
+
+[[package]]
+name = "nl-om"
+version = "0.1.0"
+
+[[package]]
+name = "nl-reader"
+version = "0.1.0"
+dependencies = [
+ "nl-om",
+ "peg",
 ]
 
 [[package]]
