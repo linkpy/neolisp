@@ -18,6 +18,7 @@ pub use nil::*;
 pub use string::*;
 pub use symbol::*;
 
+use colored::Colorize;
 use std::fmt;
 
 /// The kind of an object.
@@ -140,6 +141,95 @@ impl<T> Object<T> {
             Object::Keyword(i, v) => Object::Keyword(f(i), v.clone()),
             Object::Symbol(i, v) => Object::Symbol(f(i), v.clone()),
             Object::List(i, v) => Object::List(f(i), v.iter().map(|x| x.transform(f)).collect()),
+        }
+    }
+
+    /// Transforms the object tree into a string.
+    ///
+    pub fn stringify(&self, max_depth: usize, colors: bool) -> String {
+        if !colors {
+            self.stringify_internal(max_depth, 0)
+        } else {
+            self.stringify_internal_colored(max_depth, 0)
+        }
+    }
+
+    fn stringify_internal(&self, max_depth: usize, depth: usize) -> String {
+        match self {
+            Self::Nil(_) => "nil".to_string(),
+            Self::Bool(_, v) => format!("{}", v),
+            Self::Integer(_, v) => format!("{}", v),
+            Self::Float(_, v) => format!("{}", v),
+            Self::Char(_, v) => match v {
+                '\n' => "#newline".to_string(),
+                '\t' => "#tab".to_string(),
+                '\r' => "#carriage-return".to_string(),
+                ' ' => "#space".to_string(),
+                _ => format!("#{}", v),
+            },
+            Self::String(_, v) => format!("{:?}", v),
+            Self::Keyword(_, v) => format!(":{}", v),
+            Self::Symbol(_, v) => v.clone(),
+            Self::List(_, v) => {
+                if depth >= max_depth {
+                    "(...)".to_string()
+                } else {
+                    let mut r = "(".to_string();
+
+                    for (i, x) in v.iter().enumerate() {
+                        r.push_str(&x.stringify_internal(max_depth, depth + 1));
+
+                        if i + 1 < v.len() {
+                            r.push(' ');
+                        }
+                    }
+
+                    r.push(')');
+                    r
+                }
+            }
+        }
+    }
+
+    fn stringify_internal_colored(&self, max_depth: usize, depth: usize) -> String {
+        use colored::*;
+
+        match self {
+            Self::Nil(_) => "nil".magenta().bold().to_string(),
+            Self::Bool(_, v) => format!("{}", v).magenta().bold().to_string(),
+            Self::Integer(_, v) => format!("{}", v).yellow().to_string(),
+            Self::Float(_, v) => format!("{}", v).yellow().to_string(),
+            Self::Char(_, v) => (match v {
+                '\n' => "#newline".to_string(),
+                '\t' => "#tab".to_string(),
+                '\r' => "#carriage-return".to_string(),
+                ' ' => "#space".to_string(),
+                _ => format!("#{}", v),
+            })
+            .yellow()
+            .bold()
+            .to_string(),
+            Self::String(_, v) => format!("{:?}", v).yellow().bold().to_string(),
+            Self::Keyword(_, v) => format!(":{}", v).purple().to_string(),
+            Self::Symbol(_, v) => v.clone().purple().to_string(),
+            Self::List(_, v) => {
+                if depth >= max_depth {
+                    "(...)".cyan().to_string()
+                } else {
+                    let mut r = "(".cyan().to_string();
+
+                    for (i, x) in v.iter().enumerate() {
+                        r.push_str(&x.stringify_internal_colored(max_depth, depth + 1));
+
+                        if i + 1 < v.len() {
+                            r.push(' ');
+                        }
+                    }
+
+                    r.push_str(&")".cyan().to_string());
+                    r
+                }
+            }
         }
     }
 }

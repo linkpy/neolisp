@@ -7,7 +7,6 @@ pub use evaluation::*;
 pub use info::*;
 
 use nl_om::*;
-
 use std::collections::HashMap;
 
 /// Objects used by the evaluator.

@@ -190,13 +190,15 @@ dependencies = [
 name = "nl-eval"
 version = "0.1.0"
 dependencies = [
- "colored",
  "nl-om",
 ]
 
 [[package]]
 name = "nl-om"
 version = "0.1.0"
+dependencies = [
+ "colored",
+]
 
 [[package]]
 name = "nl-reader"
