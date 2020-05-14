@@ -283,10 +283,10 @@ impl Evaluator {
 impl Frame {
     /// Creates a new frame.
     ///
-    pub fn new(name: &str, location: Location) -> Frame {
-        Frame {
+    pub fn new(name: &str, location: Location) -> Option<Frame> {
+        Some(Frame {
             name: name.to_string(),
             location,
-        }
+        })
     }
 }
